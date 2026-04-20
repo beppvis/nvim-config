@@ -3,7 +3,6 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-	-- Configure LazyVim to load gruvbox
 	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
@@ -45,11 +44,7 @@ return {
 	},
 	{
 		"MeanderingProgrammer/render-markdown.nvim",
-		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
-		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
-		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-		---@module 'render-markdown'
-		---@type render.md.UserConfig
+		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" }, -- if you use standalone mini plugins
 		opts = {},
 	},
 	{
@@ -87,6 +82,65 @@ return {
 				"<cmd>Trouble qflist toggle<cr>",
 				desc = "Quickfix List (Trouble)",
 			},
+		},
+	},
+	{
+		"Aietes/esp32.nvim",
+		name = "esp32.nvim",
+		dependencies = {
+			"folke/snacks.nvim",
+		},
+		opts = {
+			build_dir = "build.clang",
+		},
+		config = function(_, opts)
+			require("esp32").setup(opts)
+		end,
+		keys = {
+			{
+				"<leader>RM",
+				function()
+					require("esp32").pick("monitor")
+				end,
+				desc = "ESP32: Pick & Monitor",
+			},
+			{
+				"<leader>Rm",
+				function()
+					require("esp32").command("monitor")
+				end,
+				desc = "ESP32: Monitor",
+			},
+			{
+				"<leader>RF",
+				function()
+					require("esp32").pick("flash")
+				end,
+				desc = "ESP32: Pick & Flash",
+			},
+			{
+				"<leader>Rf",
+				function()
+					require("esp32").command("flash")
+				end,
+				desc = "ESP32: Flash",
+			},
+			{
+				"<leader>Rc",
+				function()
+					require("esp32").command("menuconfig")
+				end,
+				desc = "ESP32: Configure",
+			},
+			{
+				"<leader>RC",
+				function()
+					require("esp32").command("clean")
+				end,
+				desc = "ESP32: Clean",
+			},
+			{ "<leader>Rr", ":ESPReconfigure<CR>", desc = "ESP32: Reconfigure project" },
+			{ "<leader>Ri", ":ESPInfo<CR>", desc = "ESP32: Project Info" },
 		},
 	},
 }

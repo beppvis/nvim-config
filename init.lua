@@ -58,6 +58,9 @@ do
     vim.keymap.set({ 'n' }, '<A-l>', '<C-w>l')
     vim.keymap.set({ 'n' }, '<Esc>', '<cmd>nohlsearch<CR>')
     vim.keymap.set({ 'n' }, '<C-A-up>', '<cmd>m +1<CR>')
+
+    vim.keymap.set({ 'n' }, '<A-f>', '<cmd>Terminal<CR>')
+
 end
 do
     -- AUTOCOMMANDS (EVENT HANDLERS)

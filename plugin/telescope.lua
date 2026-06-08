@@ -1,3 +1,4 @@
+-- NOTE: I yoinked this form `kickstart.nvim`
 do
   -- [[ Fuzzy Finder (files, lsp, etc) ]]
   --

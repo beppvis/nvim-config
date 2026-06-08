@@ -42,6 +42,10 @@
       "rev": "6937ff1d7bf47ab58046c6685cc9057aa481ecb2",
       "src": "https://github.com/nvim-mini/mini.completion"
     },
+    "neoscroll.nvim": {
+      "rev": "c8d29979cb0cb3a2437a8e0ae683fd82f340d3b8",
+      "src": "https://github.com/karb94/neoscroll.nvim"
+    },
     "nvim-lspconfig": {
       "rev": "246572944c2a1e2a646c2e7609ff619b0fe74c18",
       "src": "https://github.com/neovim/nvim-lspconfig"

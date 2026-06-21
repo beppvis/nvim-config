@@ -41,7 +41,7 @@ do
     -- See `:h vim.keymap.set()`, `:h mapping`, `:h keycodes`
 
     -- Use <Esc> to exit terminal mode
-    vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
+    vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>')
 
     -- Map <A-j>, <A-k>, <A-h>, <A-l> to navigate between windows in any modes
     vim.keymap.set({ 't', 'i' }, '<A-h>', '<C-\\><C-n><C-w>h')
@@ -59,9 +59,39 @@ do
     vim.keymap.set({ 'n' }, '<Esc>', '<cmd>nohlsearch<CR>')
     vim.keymap.set({ 'n' }, '<C-A-up>', '<cmd>m +1<CR>')
 
-    vim.keymap.set({ 'n' }, '<A-f>', '<cmd>Terminal<CR>')
+    vim.keymap.set({ 'n','t' }, '<A-f>', '<cmd>Terminal<CR>')
 
 end
+
+do
+    vim.api.nvim_create_user_command('ZigExe',function()
+
+            local curr_window = vim.api.nvim_get_current_win();
+            local cursor_position = vim.api.nvim_win_get_cursor(curr_window);
+            local buf =vim.api.nvim_create_buf(false,true)
+            vim.api.nvim_open_win(buf,true,{
+                relative='win',
+                width=100,
+                height=30,
+                bufpos={cursor_position[1],cursor_position[2]},
+                border = "rounded",
+            })
+            -- Open a standard interactive shell terminal
+            vim.api.nvim_cmd({ cmd = "terminal", args = {} }, {})
+
+            -- Get the channel ID of the newly spawned terminal
+            local job_id = vim.b[buf].terminal_job_id
+
+            -- Wait 20 milliseconds for the shell to initialize, then send the command
+            if job_id then
+                vim.fn.chansend(job_id, "zig build run\n")
+            end
+
+
+    end,{
+        })
+end
+
 do
     -- AUTOCOMMANDS (EVENT HANDLERS)
     --
@@ -97,7 +127,31 @@ do
       'https://github.com/lewis6991/gitsigns.nvim',
     'https://github.com/rebelot/kanagawa.nvim',
     })
-    vim.cmd.colorscheme('kanagawa')
+    require('kanagawa').setup({
+        compile = false,             -- enable compiling the colorscheme
+        undercurl = true,            -- enable undercurls
+        commentStyle = { italic = true },
+        functionStyle = {},
+        keywordStyle = { italic = true},
+        statementStyle = { bold = true },
+        typeStyle = {},
+        transparent = false,         -- do not set background color
+        dimInactive = false,         -- dim inactive window `:h hl-NormalNC`
+        terminalColors = true,       -- define vim.g.terminal_color_{0,17}
+        colors = {                   -- add/modify theme and palette colors
+            palette = {},
+            theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
+        },
+        overrides = function(colors) -- add/modify highlights
+            return {}
+        end,
+        theme = "dragon",              -- Load "wave" theme
+        background = {               -- map the value of 'background' option to a theme
+            dark = "dragon",           -- try "dragon" !
+            light = "lotus"
+        },
+    })
+    vim.cmd.colorscheme('kanagawa-dragon')
     require('fzf-lua').setup { fzf_colors = true }
     require('quicker').setup {}
     require('gitsigns').setup {}
